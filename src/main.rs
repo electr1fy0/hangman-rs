@@ -1,4 +1,5 @@
 use rand::prelude::*;
+use reqwest;
 use std::env;
 use std::io;
 
@@ -15,6 +16,12 @@ fn generate_word(wlen: usize) -> String {
     }
     word
 }
+fn request_word(wlen: usize) -> Result<String, Box<dyn std::error::Error>> {
+    let url = format!("https://random-word-api.herokuapp.com/word?length={}", wlen);
+    let res = reqwest::blocking::get(url)?.text()?;
+
+    Ok(res)
+}
 
 fn generate_bricks(wlen: usize) -> String {
     let mut word = String::with_capacity(wlen);
@@ -24,13 +31,19 @@ fn generate_bricks(wlen: usize) -> String {
     word
 }
 
-// fn compare_chars(key: &str, guess: &str, bricks: &str) { [WIP]
-//     let wlen = guess.len();
+fn compare_chars(key: &str, guess: &str, bricks: &str) {
+    // [WIP]
+    let wlen = guess.len();
 
-//     for i in wlen {
-//        if
-//     }
-// }
+    let mut chars: Vec<char> = bricks.chars().collect();
+
+    for i in 0..wlen {
+        if key.chars().nth(i) == guess.chars().nth(i) {
+            println!("match");
+            chars[i] = guess.chars().nth(i).unwrap();
+        }
+    }
+}
 
 fn main() {
     println!("Welcome to Hangman! Let's hang.🧵");
@@ -49,10 +62,14 @@ fn main() {
     let length: usize = length.trim().parse().expect("Error parsing word length");
 
     // word gen
-    let data = generate_word(length);
+    let data = request_word(length).unwrap();
     let visible = env::var("DEBUG").is_ok();
 
     dbg!(visible);
+
+    if visible {
+        println!("{}", data);
+    }
     let word = Word {
         data,
         length,
@@ -68,7 +85,7 @@ fn main() {
     let mut bricks = generate_bricks(word.length);
     dbg!(&bricks);
 
-    // compare_chars(&word.data, &guess, &bricks); [WIP]
+    compare_chars(&word.data, &guess, &bricks);
 }
 
 fn u8_input(num: &mut u8) {
