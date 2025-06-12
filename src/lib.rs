@@ -25,6 +25,40 @@ impl Game {
 
         Game { score, moves }
     }
+    pub fn start(&mut self) {
+        loop {
+            let mut data = Data::new();
+            data.view_secret_if_debug();
+
+            if compare_words(self, &mut data) {
+                println!("You won!");
+
+                increment_score(&mut self.score);
+                println!("Your score: {}", self.score);
+
+                println!("Do you wanna continue playing?");
+                let mut consent = String::new();
+                io::stdin()
+                    .read_line(&mut consent)
+                    .expect("Error gaining consent😭");
+
+                let consent = consent.trim();
+                let consent = &consent.to_lowercase()[..];
+
+                if consent == "yes" || consent == "y" {
+                    continue;
+                }
+
+                println!("Cool. See you later.");
+                break;
+            };
+
+            if self.moves <= 0 {
+                println!("You lose!");
+                break;
+            }
+        }
+    }
 }
 
 impl Data {
@@ -64,7 +98,7 @@ impl Data {
     }
 }
 
-pub fn compare_words(data: &mut Data, game: &mut Game) -> bool {
+pub fn compare_words(game: &mut Game, data: &mut Data) -> bool {
     let wlen = data.length;
 
     println!("Enter your guess word.");
