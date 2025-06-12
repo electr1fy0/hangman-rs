@@ -10,14 +10,26 @@ pub struct Data {
     pub secret: String,
     pub bricks: String,
     pub length: usize,
+}
+
+pub struct Game {
+    pub score: u8,
     pub moves: u8,
+}
+
+impl Game {
+    pub fn new() -> Self {
+        let score = 0;
+        let mut moves: u8 = 0;
+        u8_input(&mut moves);
+
+        Game { score, moves }
+    }
 }
 
 impl Data {
     pub fn new() -> Data {
         println!("Enter number of moves.");
-        let mut moves: u8 = 0;
-        u8_input(&mut moves);
 
         println!("Enter word length.");
         let mut length = String::new();
@@ -28,10 +40,8 @@ impl Data {
         let length: usize = length.trim().parse().expect("Error parsing word length");
         let secret = request_word(length).expect("Error fetching the secret word");
         let bricks = generate_bricks(length);
-
         let data = Data {
             length,
-            moves,
             secret,
             bricks,
         };
@@ -54,11 +64,11 @@ impl Data {
     }
 }
 
-pub fn compare_words(data: &mut Data) -> bool {
+pub fn compare_words(data: &mut Data, game: &mut Game) -> bool {
     let wlen = data.length;
 
     println!("Enter your guess word.");
-    println!("{} (Moves remaining: {})", data.bricks, data.moves);
+    println!("{} (Moves remaining: {})", data.bricks, game.moves);
 
     let mut guess = String::with_capacity(data.length);
     io::stdin()
@@ -76,12 +86,16 @@ pub fn compare_words(data: &mut Data) -> bool {
         }
     }
     data.bricks = brick_vec.into_iter().collect();
-    data.moves -= 1;
+    game.moves -= 1;
 
     if data.bricks == data.secret {
         return true;
     }
     false
+}
+
+pub fn increment_score(score: &mut u8) {
+    *score += 1
 }
 
 pub fn request_word(wlen: usize) -> Result<String, Box<dyn std::error::Error>> {
