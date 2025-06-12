@@ -30,7 +30,7 @@ pub fn config_data() -> Data {
     // Make the secret visible if debug is set as an environment variable
     let visible = env::var("DEBUG").is_ok();
     if visible {
-        dbg!(&visible);
+        dbg!(&secret);
     }
 
     // Construct the string of dashes
