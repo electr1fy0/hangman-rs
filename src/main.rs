@@ -75,9 +75,10 @@ struct Table {
 impl Table {
     fn new() -> Self {
         let mut arr: [char; 9] = ['u'; 9];
-
+        let mut cnt: u8 = 1;
         for i in &mut arr {
-            *i = '-';
+            *i = (cnt + 48) as char;
+            cnt += 1;
         }
         Table { data: arr }
     }
@@ -86,11 +87,15 @@ fn print_table(table: &Table) {
     let mut idx = 0;
 
     while idx < 9 {
-        print!("{}   ", table.data[idx]);
-        idx += 1;
-        if idx % 3 == 0 && idx != 0 {
-            println!();
+        // if idx % 3 != 0 || idx == 0 {
+        print!("{} ", table.data[idx]);
+
+        if (idx + 1) % 3 == 0 && idx != 0 {
+            println!("\n-----------");
+        } else {
+            print!("|  ")
         }
+        idx += 1;
     }
 }
 
