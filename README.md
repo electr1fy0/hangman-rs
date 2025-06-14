@@ -27,7 +27,7 @@ cargo run
 - You get limited tries to guess the word correctly.
 - Optional: to enable debug mode (show the secret word), run:
 
-```
+```bash
 export DEBUG=true
 ```
 
@@ -43,5 +43,5 @@ This will only affect the current terminal session.
 
 ### Development Status
 
-Still a WIP — core gameplay for each included game is functional.
+Still a WIP. Core gameplay for each included game is functional.
 Planned improvements include better UX, error handling, and more games.
