@@ -5,7 +5,6 @@
 use reqwest;
 use std::env;
 use std::io;
-use std::thread::panicking;
 
 pub struct Data {
     pub secret: String,
@@ -20,16 +19,66 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Self {
-        println!("Enter number of moves.");
+        // println!("Enter number of moves.");
         let score = 0;
-        let mut moves: u8 = 0;
-        u8_input(&mut moves);
-
+        let moves: u8 = 5;
+        // u8_input(&mut moves);
+        //
         Game { score, moves }
     }
     pub fn start(&mut self) {
         let mut data = Data::new();
-        loop {
+        let arts = [
+            "
+=========
+    +---+
+    |   |
+    O   |
+        |
+        |
+        |
+=========",
+            "
+=========
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+=========",
+            "
+=========
+    +---+
+    |   |
+    O   |
+   /|   |
+        |
+        |
+=========",
+            "
+
+=========
+    +---+
+    |   |
+    O   |
+   /|\\  |
+        |
+        |
+=========",
+            "
+=========
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   /    |
+        |
+=========",
+        ];
+        let mut idx: usize = 0;
+        for i in 0..self.moves {
+            println!("{}", arts[idx]);
             data.view_secret_if_debug();
             if compare_words(self, &mut data) {
                 println!("You won!");
@@ -53,8 +102,21 @@ impl Game {
                 println!("Cool. See you later.");
                 break;
             }
+            idx += 1;
             if self.moves <= 0 {
                 println!("You lose!");
+                println!(
+                    "
+
+=========
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   / \\  |
+        |
+========="
+                );
                 println!("The word was: {}", data.secret);
                 break;
             }
@@ -64,13 +126,14 @@ impl Game {
 
 impl Data {
     pub fn new() -> Data {
-        println!("Enter word length.");
-        let mut length = String::new();
-        io::stdin()
-            .read_line(&mut length)
-            .expect("Error reading word length");
+        // println!("Enter word length.");
+        // let mut length = String::new();
+        // io::stdin()
+        //     .read_line(&mut length)
+        //     .expect("Error reading word length");
 
-        let length: usize = length.trim().parse().expect("Error parsing word length");
+        // let length: usize = length.trim().parse().expect("Error parsing word length");
+        let length = 3;
         if length > 20 {
             panic!("Stay in your limits.")
         }
