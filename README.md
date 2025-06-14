@@ -23,35 +23,25 @@ cargo run
 ### 🪓 Hangman
 
 - Guess the full word at once.
-
 - Correctly guessed letters will be revealed.
-
 - You get limited tries to guess the word correctly.
-
 - Optional: to enable debug mode (show the secret word), run:
 
-`export DEBUG=true`
+```
+export DEBUG=true
+```
 
 This will only affect the current terminal session.
 
-### Tic Tac Toe
+### 🤞Tic Tac Toe
 - Classic 3x3 grid.
 - Two-player local multiplayer.
-- Enter positions using keys 1 through 9 (like a numpad):
-
-1 | 2 | 3
----------
-4 | 5 | 6
----------
-7 | 8 | 9
----------
+- Enter positions using keys 1 through 9 (like a numpad).
 
 
-⸻
+
 
 ### Development Status
 
 Still a WIP — core gameplay for each included game is functional.
 Planned improvements include better UX, error handling, and more games.
-
-⸻
